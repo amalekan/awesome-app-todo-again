@@ -1,7 +1,7 @@
 /*jshint esversion: 6*/
 const ToDoApp = {
 rootElement: '#app',
-todos:[{task: "build this app", isComplete: false}],
+todos:[],
 
 start: function () {
   this.cacheDOM();
@@ -34,9 +34,26 @@ addTodo:function (event) {
   this.taskInput.value = '';
 },
 
+cacheDeleteButtons:function () {
+this.deleteButtons = this.root.querySelectorAll('.delete');
+},
+
+bindDeleteEvents:function () {
+this.deleteButtons.forEach((button, index) => {
+  button.addEventListener('click', () => this.deleteTodo(index));
+});
+},
+
+deleteTodo:function (index) {
+  this.todos.splice(index, 1);
+  this.render();
+},
+
 render: function () {
   const lis = this.todos.map(todo => `<li>${todo.task}<button class ='delete'>X</button></li>`).join('');
   this.todoList.innerHTML = lis;
+  this.cacheDeleteButtons();
+  this.bindDeleteEvents();
 },
 
 
